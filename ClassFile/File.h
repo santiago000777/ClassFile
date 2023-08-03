@@ -59,6 +59,8 @@ public:
 		else if (pomFile.is_open() && mode == eMode::BINR) {
 
 			ZjisteniTypeName();
+			pomFile.close();
+			pomFile.open(sPath.c_str(), std::ios::in | std::ios::binary);
 			if ((typeID == (std::string)typeid(T).name() && typeSaveMode == true) || (typeID != (std::string)typeid(T).name() && typeSaveMode == false)) {
 					// ulozeni do sFileText a pote zpristupnit s funkci GetData()
 				T pomTRead;
