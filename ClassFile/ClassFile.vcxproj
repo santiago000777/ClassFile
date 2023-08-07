@@ -133,6 +133,7 @@
     <ClCompile Include="DataSize.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="FileDataStructure.cpp" />
+    <ClCompile Include="VecDataStructure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="DataSize.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="FileDataStructure.h" />
+    <ClInclude Include="VecDataStructure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

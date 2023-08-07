@@ -7,6 +7,11 @@ TFile::TFile(std::string path, eMode mode, bool saveMode) {
 	this->mode = mode;
 	this->sPath = path;
 	this->typeSaveMode = saveMode;
+	this->pocitadloTrid = 0;
+	this->sizeBinFile = 0;
+	this->sDataStrucPath = "dataStructure.bin";
+	//DSFile.open(sDataStrucPath.c_str(), std::ios::out | std::ios::binary);
+
 	switch (mode) {
 		
 		case eMode::READ: {
@@ -31,7 +36,7 @@ TFile::TFile(std::string path, eMode mode, bool saveMode) {
 		}
 	}
 
-	if (!pomFile.is_open()) {
+	if (!pomFile.is_open()/* || !DSFile.is_open()*/) {
 		std::cout << "ERROR!\n";
 		__debugbreak();
 	}
@@ -50,6 +55,7 @@ void TFile::Close() {
 		this->sFileText = "\0";
 		this->size.DevalueVar();
 		this->sPath = "\0";
+		//delete[] & dataStruct;
 	}
 }
 
