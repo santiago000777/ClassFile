@@ -15,7 +15,7 @@ TFile::TFile(std::string path, eMode mode, bool saveMode) {
 	switch (mode) {
 		
 		case eMode::READ: {
-			pomFile.open(path.c_str(), std::ios::in);
+			pomFile.open(path.c_str(), std::ios::in | std::ios::beg);
 			break;
 		}
 		case eMode::WRITE: {

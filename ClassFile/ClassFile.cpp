@@ -8,6 +8,7 @@
 class TClass2 {
 public:
     int x;
+    
     TClass2() = default;
     TClass2(int x) {
         this->x = x;
@@ -27,27 +28,30 @@ int main()
 
     TFile file1((std::string)"ahoj1.bin", TFile::eMode::BINW);
 
-    TClass cls1a(1, 2, 8.5446);
-    //char c = 'j';
-    file1.Write<TClass>(cls1a, cls1a.GetSize());
+    TClass2 cls1sa(4);
+    file1.Write<TClass2>(cls1sa, cls1sa.GetSize());
 
-    TClass2 cls2a(4);
-    file1.Write<TClass2>(cls2a, cls2a.GetSize());
+    //TClass cls1a(1, 2, 8.5446);
+    ////char c = 'j';
+    //file1.Write<TClass>(cls1a, cls1a.GetSize());
 
-    TClass cls3a(2, 8, 19.54);
-    file1.Write<TClass>(cls3a, cls3a.GetSize());
+    //TClass2 cls2a(4);
+    //file1.Write<TClass2>(cls2a, cls2a.GetSize());
 
-    TClass cls4a(7, 8, 12.89);
-    file1.Write<TClass>(cls4a, cls4a.GetSize());
+    //TClass cls3a(2, 8, 19.54);
+    //file1.Write<TClass>(cls3a, cls3a.GetSize());
 
-    TClass2 cls5a(8);
-    file1.Write<TClass2>(cls5a, cls5a.GetSize());
+    //int cls4a = 5;
+    //file1.Write<int>(cls4a, 4);
 
-    TClass2 cls6a(9);
-    file1.Write<TClass2>(cls6a, cls6a.GetSize());
+    //TClass2 cls5a(8);
+    //file1.Write<TClass2>(cls5a, cls5a.GetSize());
 
-    TClass cls7a(88, 77, 9.994);
-    file1.Write<TClass>(cls7a, cls7a.GetSize());
+    //TClass2 cls6a(9);
+    //file1.Write<TClass2>(cls6a, cls6a.GetSize());
+
+    //TClass cls7a(88, 77, 9.994);
+    //file1.Write<TClass>(cls7a, cls7a.GetSize());
 
 
 
@@ -56,30 +60,33 @@ int main()
 
 
     TFile file2((std::string)"ahoj1.bin", TFile::eMode::BINR);
-    file2.Read<char>();
+    file2.Read/*<char>*/();
+
+    TClass2 cls1sb(0);
+    cls1sb = file2.GetData<TClass2>(0);
 
 
-    TClass cls1b(0, 0, 0.0);
-    //char h = '\0';
-    cls1b = file2.GetData<TClass>(0);
+    //TClass cls1b(0, 0, 0.0);
+    ////char h = '\0';
+    //cls1b = file2.GetData<TClass>(0);
 
-    TClass2 cls2b(0);
-    cls2b = file2.GetData<TClass2>(1);
+    //TClass2 cls2b(0);
+    //cls2b = file2.GetData<TClass2>(1);
 
-    TClass cls3b(0, 0, 0.0);
-    cls3b = file2.GetData<TClass>(2);
+    //TClass cls3b(0, 0, 0.0);
+    //cls3b = file2.GetData<TClass>(2);
 
-    TClass cls4b(0, 0, 0.0);
-    cls4b = file2.GetData<TClass>(3);
+    //int cls4b = 0;
+    //cls4b = file2.GetData<int>(3);
 
-    TClass2 cls5b(0);
-    cls5b = file2.GetData<TClass2>(4);
+    //TClass2 cls5b(0);
+    //cls5b = file2.GetData<TClass2>(4);
 
-    TClass2 cls6b(0);
-    cls6b = file2.GetData<TClass2>(5);
+    //TClass2 cls6b(0);
+    //cls6b = file2.GetData<TClass2>(5);
 
-    TClass cls7b(0, 0, 0.0);
-    cls7b = file2.GetData<TClass>(6);
+    //TClass cls7b(0, 0, 0.0);
+    //cls7b = file2.GetData<TClass>(6);
 
     //file2.Close();
     __debugbreak();
