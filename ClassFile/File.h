@@ -184,7 +184,7 @@ public:
 
 
 	template<typename T>
-	T& GetData(int index) {
+	T* GetData(int index) {
 		
 			// zjisteni typu pomoci dataStruct
 		
@@ -193,10 +193,10 @@ public:
 		if ((dataStruct.at(index).sType == (std::string)typeid(T).name() && typeSaveMode == true) || (dataStruct.at(index).sType != (std::string)typeid(T).name() && typeSaveMode == false)) { // kontrola kompatibility typu pres dataStruct
 			if (pomFile.is_open() && mode == eMode::BINR) {
 				
-				T pomT;
+				T* pomT = new T();
 
 				pomFile.seekg(dataStruct.at(index).iPosInFile, std::ios::beg);	// nastaveni pozice cteni pomoci dataStruct
-				pomFile.read((char*)&pomT, dataStruct.at(index).size);
+				pomFile.read((char*)pomT, dataStruct.at(index).size);
 				pomFile.close();
 				return pomT;
 			}
