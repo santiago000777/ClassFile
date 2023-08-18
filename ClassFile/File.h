@@ -56,8 +56,6 @@ public:
 		
 	}
 	
-
-	//template<typename T>
 	void Read() {
 		
 		if (pomFile.is_open() && mode == eMode::READ) {
@@ -85,51 +83,7 @@ public:
 
 			
 			pomFile >> sFileText;
-
-			//for (int k = 0; k < dataStruct.size(); k++) {
-			//	
-			//		// musim nacist data z slozky "dataStructure.bin"
-
-			//	
-			//	
-			//	//pomFile.seekg(dataStruct.at(k).iPosInFile, std::ios::beg); // nastaveni pozice cteni pomoci dataStruct
-
-			//	T pomTRead;
-			//	pomFile.read((char*)&pomTRead/*(char*)&pChar*/, dataStruct.at(k).size); // sizeof nemusi byt spravne stejne jak u std::vector
-
-			//	
-
-			//	char* pTRead = (char*)&pomTRead;
-			//	for (int i = 0; i < dataStruct.at(k).size; i++) {
-			//		sFileText += *pTRead/*pChar*/;
-			//		pTRead++;
-			//		/*pChar++;*/
-			//	}
-			//	/*}
-			//	else {
-			//		std::cout << "CLASS/STRUCT TYPE ERROR!" << std::endl;
-			//		__debugbreak();
-			//	}*/
-			//}
 			pomFile.close();
-			//if ((dataStruct.at(index).sType == (std::string)typeid(T).name() && typeSaveMode == true) || (dataStruct.at(index).sType != (std::string)typeid(T).name() && typeSaveMode == false)) {	// kontrola kompatibility typu pres dataStruct
-
-			//		// musim nacist data z slozky "dataStructure.bin"
-			//	
-
-			//	T pomTRead;
-			//	pomFile.seekg(dataStruct.at(index).iPosInFile, std::ios::beg); // nastaveni pozice cteni pomoci dataStruct
-			//	pomFile.read((char*)&pomTRead, sizeof(T));
-			//	char* pTRead = (char*)&pomTRead;
-			//	for (int i = 0; i < sizeof(T); i++) {
-			//		sFileText += *pTRead;
-			//		pTRead++;
-			//	}
-			//}
-			//else {
-			//	std::cout << "CLASS/STRUCT TYPE ERROR!" << std::endl;
-			//	__debugbreak();
-			//}
 			
 		}
 		else {
@@ -142,7 +96,7 @@ public:
 	void Write(std::string s);
 								
 	template<typename T>
-	void Write(T var, int varSize) {
+	void Write(T* var, int varSize) { // pridano *
 		pomFile.close();
 		pomFile.open(sPath.c_str(), std::ios::app | std::ios::binary);
 		if (pomFile.is_open() && mode == eMode::BINW) {
@@ -163,10 +117,14 @@ public:
 			}
 			
 			pocitadloTrid++;
-			int SFsize = 0;
+			/*int SFsize = sizeof(std::vector<TFileDataStructure>) + sizeof(TFileDataStructure) * dataStruct.size();*/
+			int SFsize = sizeof(std::vector<TFileDataStructure>);
 			for (int i = 0; i < pocitadloTrid; i++) {
 				SFsize += sizeof(int) + sizeof(int) + sizeof(size_t) + dataStruct.at(i).sType.size();
 			}
+			
+
+
 
 			DSFile.write((const char*)&dataStruct, SFsize);
 			DSFile.close();
@@ -174,7 +132,7 @@ public:
 
 				// vepsani dat do hlavni slozky
 			
-			pomFile.write((const char*)&var, varSize);
+			pomFile.write((const char*)var, varSize); // &
 		}
 		else {
 			std::cout << "MODE ERROR!" << std::endl;
@@ -193,9 +151,9 @@ public:
 		if ((dataStruct.at(index).sType == (std::string)typeid(T).name() && typeSaveMode == true) || (dataStruct.at(index).sType != (std::string)typeid(T).name() && typeSaveMode == false)) { // kontrola kompatibility typu pres dataStruct
 			if (pomFile.is_open() && mode == eMode::BINR) {
 				
-				T* pomT = new T();
 
 				pomFile.seekg(dataStruct.at(index).iPosInFile, std::ios::beg);	// nastaveni pozice cteni pomoci dataStruct
+				T* pomT = new T;
 				pomFile.read((char*)pomT, dataStruct.at(index).size);
 				pomFile.close();
 				return pomT;

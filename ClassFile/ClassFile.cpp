@@ -5,67 +5,136 @@
 #include "File.h"
 #include "Class.h"
 
-class TClass2 {
+#define MODE    0
+                //  0 -> dva stringy
+                //  1 -> int a string
+                //  2 -> vector
+
+
+#if MODE == 0
+class TClass1 {
 public:
     int x;
-    std::string s;
+    std::string s1;
+    std::string s2;
 
-
-    TClass2() {
+    TClass1() {
         this->x = 0;
-        this->s = "";
+        this->s1 = "";
+        this->s2 = "";
+
+
     }
-    TClass2(int x, std::string s) {
+    TClass1(int x, std::string s1, std::string s2) {
         this->x = x;
-        this->s = s;
+        this->s1 = s1;
+        this->s2 = s2;
     }
 
-    ~TClass2() {
+    ~TClass1() {
         this->x = 0;
-        this->s = "";
+        this->s1 = "";
+        this->s2 = "";
+
     }
 
     int GetSize() const {
         int size = sizeof(x);
-        size += sizeof(std::string) + s.size();
+        size += sizeof(std::string) + s1.size();
+        size += sizeof(std::string) + s2.size();
 
         return size;
     }
 };
+#elif MODE == 1
+class TClass2 {
+public:
+    int x;
+    std::string s1;
+
+    TClass2() {
+        this->x = 0;
+        this->s1 = "";
+
+
+    }
+    TClass2(int x, std::string s1) {
+        this->x = x;
+        this->s1 = s1;
+    }
+
+    ~TClass2() {
+        this->x = 0;
+        this->s1 = "";
+
+    }
+
+    int GetSize() const {
+        int size = sizeof(x);
+        size += sizeof(std::string) + s1.size();
+
+        return size;
+    }
+};
+#elif MODE == 2
+class TClass3 {
+public:
+    std::vector<int> iVec;
+
+    TClass3() {
+    }
+    TClass3(const std::vector<int>& v) {
+        this->iVec = v;
+    }
+
+    ~TClass3() {
+    }
+
+    int GetSize() const {
+        int size = 0;
+
+        size += sizeof(std::vector<int>) + iVec.size() * sizeof(int);
+
+        return size;
+    }
+};
+#endif
 
 
 
 int main()
 {
-
-    
-
     TFile file1((std::string)"ahoj1.bin", TFile::eMode::BINW);
 
-
-    TClass2 cls1a(4, "Ahoj");
-    file1.Write<TClass2>(cls1a, cls1a.GetSize());
-
-    TClass2 cls2a(8, "Zdar");
-    file1.Write<TClass2>(cls2a, cls2a.GetSize());
-
-    
+#if MODE == 0
+    TClass1* cls1a = new TClass1(2, "ahoj", "AHOJ");
+    file1.Write<TClass1>(cls1a, cls1a->GetSize());
+#elif MODE == 1
+    TClass2* cls1a = new TClass2(2, "Ahoj");
+    file1.Write<TClass2>(cls1a, cls1a->GetSize());
+#elif MODE == 2
+    TClass3 *cls1a = new TClass3({ 1,2 }); // normalne bez *
+    file1.Write<TClass3>(cls1a, cls1a->GetSize()); //.
+#endif
 
 
     file1.Close();
-
-
 
     TFile file2((std::string)"ahoj1.bin", TFile::eMode::BINR);
     
     file2.Read();
 
 
-    TClass2 cls1b(0, "");
+#if MODE == 0
+    TClass1 cls1b;
+    cls1b = *file2.GetData<TClass1>(0);
+#elif MODE == 1
+    TClass2 cls1b;
     cls1b = *file2.GetData<TClass2>(0);
-
-    TClass2 cls2b(0, "");
-    cls2b = *file2.GetData<TClass2>(1);
+#elif MODE == 2
+    TClass3 cls1b;
+    cls1b = *file2.GetData<TClass3>(0);
+#endif
 
 
 
@@ -74,13 +143,6 @@ int main()
     std::cout << std::endl << "Hello World!\n";
 }
 
-
-/*TFile file("mojeSlozka.txt", TFile::eMode::WRITE);
-    file.Write((std::string)"Ahoj, jmenuji se Jakub Veit.\n");  // v souboru je vzdy jen to co je napsano v main() i kdyz v ni bylo neco puvodne pred buildem napsano
-
-    std::cout << file.size.GetSize(file.pomFile, TDataSize::eUnit::BYTE) << " bytes";
-    
-    file.Close();*/
 
 
 
