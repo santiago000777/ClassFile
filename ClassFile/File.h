@@ -35,7 +35,7 @@ public:
 	
 
 	template<typename T> 
-	void Rewrite(T var, int varSize) {
+	void Rewrite(T* var, int varSize) { //
 		if (pomFile.is_open() && mode == eMode::BINW) {
 
 				// nastaveni parametru dat do file dataStruct...
@@ -47,7 +47,7 @@ public:
 
 				// vepsani dat do hlavni slozky
 			pomFile.clear();
-			pomFile.write((const char*)&var, varSize);
+			pomFile.write((const char*)var, varSize); //
 		}
 		else {
 			std::cout << "MODE ERROR!" << std::endl;
@@ -56,43 +56,7 @@ public:
 		
 	}
 	
-	void Read() {
-		
-		if (pomFile.is_open() && mode == eMode::READ) {
-			std::string* sPom = new std::string;
-			while (std::getline(pomFile, *sPom))
-				sFileText += *sPom + "\n";
-			delete sPom;
-		}
-		else if (pomFile.is_open() && mode == eMode::BINR) {
-			DSFile.open(sDataStrucPath.c_str(), std::ios::in, std::ios::binary);
-
-			
-			DSFile.seekg(0, std::ios::beg);
-			std::streampos begin = DSFile.tellg();
-			DSFile.seekg(0, std::ios::end);
-			std::streampos end = DSFile.tellg();
-			int size = end - begin;
-
-			DSFile.seekg(0, std::ios::beg);
-			
-			
-			DSFile.read((char*)&dataStruct, size);
-			this->mode = eMode::BINR;
-			DSFile.close();
-
-			
-			pomFile >> sFileText;
-			pomFile.close();
-			
-		}
-		else {
-			std::cout << "MODE ERROR!" << std::endl;
-			__debugbreak();
-		}
-	}
-
-
+	
 	void Write(std::string s);
 								
 	template<typename T>
@@ -133,6 +97,42 @@ public:
 				// vepsani dat do hlavni slozky
 			
 			pomFile.write((const char*)var, varSize); // &
+		}
+		else {
+			std::cout << "MODE ERROR!" << std::endl;
+			__debugbreak();
+		}
+	}
+
+	void Read() {
+
+		if (pomFile.is_open() && mode == eMode::READ) {
+			std::string* sPom = new std::string;
+			while (std::getline(pomFile, *sPom))
+				sFileText += *sPom + "\n";
+			delete sPom;
+		}
+		else if (pomFile.is_open() && mode == eMode::BINR) {
+			DSFile.open(sDataStrucPath.c_str(), std::ios::in, std::ios::binary);
+
+
+			DSFile.seekg(0, std::ios::beg);
+			std::streampos begin = DSFile.tellg();
+			DSFile.seekg(0, std::ios::end);
+			std::streampos end = DSFile.tellg();
+			int size = end - begin;
+
+			DSFile.seekg(0, std::ios::beg);
+
+
+			DSFile.read((char*)&dataStruct, size);
+			this->mode = eMode::BINR;
+			DSFile.close();
+
+
+			pomFile >> sFileText;
+			pomFile.close();
+
 		}
 		else {
 			std::cout << "MODE ERROR!" << std::endl;

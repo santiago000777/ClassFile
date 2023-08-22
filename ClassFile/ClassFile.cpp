@@ -108,7 +108,7 @@ int main()
 
 #if MODE == 0
     TClass1* cls1a = new TClass1(2, "ahoj", "AHOJ");
-    file1.Write<TClass1>(cls1a, cls1a->GetSize());
+    file1.Rewrite<TClass1>(cls1a, cls1a->GetSize());
 #elif MODE == 1
     TClass2* cls1a = new TClass2(2, "Ahoj");
     file1.Write<TClass2>(cls1a, cls1a->GetSize());
