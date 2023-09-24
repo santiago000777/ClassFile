@@ -9,7 +9,10 @@ TFile::TFile(std::string path, eMode mode, bool saveMode) {
 	this->typeSaveMode = saveMode;
 	this->pocitadloTrid = 0;
 	this->sizeBinFile = 0;
-	this->sDataStrucPath = "dataStructure.bin";
+	this->sizeStruct = 0;
+	this->sData = "";
+	this->sFile = "";
+	this->sStruct = "";
 	//DSFile.open(sDataStrucPath.c_str(), std::ios::out | std::ios::binary);
 
 	switch (mode) {
@@ -52,7 +55,6 @@ void TFile::Close() {
 		this->mode = eMode::NONE;
 		this->begin = -1;
 		this->end = -1;
-		this->sFileText = "\0";
 		this->size.DevalueVar();
 		this->sPath = "\0";
 		//delete[] & dataStruct;
@@ -97,7 +99,7 @@ void TFile::Write(std::string s) {
 
 
 std::string TFile::GetText() {
-	return sFileText;
+	return sFile;
 }
 
 std::streampos TFile::GetBeg() {

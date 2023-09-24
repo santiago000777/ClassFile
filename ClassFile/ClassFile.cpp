@@ -139,7 +139,7 @@ int main()
 
 
     //file2.Close();
-    __debugbreak();
+    __debugbreak(); // bug
     std::cout << std::endl << "Hello World!\n";
 }
 
